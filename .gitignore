@@ -1,0 +1,25 @@
+# Data
+data/raw/
+data/processed/
+
+# Kaggle credentials
+.kaggle/
+
+# Models
+models/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
