@@ -155,11 +155,18 @@ The project supports two data sources, configurable in `src/config.py`:
 
 **Option A — Kaggle API** (downloads the raw zip automatically)
 
-Set `SOURCE = "kaggle"` in `config.py`, then place your `kaggle.json` credentials file at `~/.kaggle/kaggle.json`. The loader will fetch the dataset and save it to `data/raw/`.
+Set `source = "kaggle"` in `config.py`, then place your `kaggle.json` credentials file at `~/.kaggle/kaggle.json`. The loader will fetch the dataset and save it to `data/raw/`.
 
 **Option B — scikit-learn** (no download required)
 
-Set `SOURCE = "sklearn"` in `config.py`. The dataset is loaded directly via `sklearn.datasets.load_breast_cancer()` and the Kaggle API dependency is not required.
+Set `source = "sklearn"` in `config.py`. The dataset is loaded directly via `sklearn.datasets.load_breast_cancer()` and the Kaggle API dependency is not required.
+
+**Option C — Manual download from Kaggle website**
+
+Set `source = "kaggle_csv"` in `config.py`. Download the dataset manually from
+https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data, place the
+extracted `data.csv` file into `data/raw/`, then run the notebook as usual.
+No Kaggle API credentials required.
 
 ---
 
