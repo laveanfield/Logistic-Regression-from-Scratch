@@ -108,7 +108,7 @@ Covers model training with both custom and scikit-learn implementations, evaluat
 | Model                 | Accuracy | F1 Score |
 |-----------------------|----------|----------|
 | Custom implementation | ~95–97%  | ~0.95+   |
-| scikit-learn baseline | ~97%     | ~0.97    |
+| Scikit-learn baseline | ~97%     | ~0.97    |
 
 Results may vary slightly depending on random seed, hyperparameter configuration, and whether class balancing is applied.
 
