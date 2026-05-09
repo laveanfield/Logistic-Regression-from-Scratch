@@ -34,6 +34,7 @@ Logistic-Regression-from-Scratch/
 ├── logistic_regression_breast_cancer.ipynb    # Model training, evaluation, and comparison
 ├── requirements.txt
 ├── .gitignore
+├── README.md
 └── LICENSE
 ```
 
