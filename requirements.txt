@@ -9,8 +9,8 @@ matplotlib==3.9.3
 seaborn
 plotly
 
-# Optional — class balancing (only if using apply_smote())
+# Optional - class balancing (only if using apply_smote())
 imbalanced-learn>=0.11
 
-# Optional — Kaggle API (only if using source="kaggle")
+# Optional - Kaggle API (only if using source="kaggle")
 kaggle>=1.6

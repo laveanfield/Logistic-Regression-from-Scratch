@@ -4,10 +4,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
+from matplotlib.patches import Patch
 from plotly.subplots import make_subplots
 from scipy import stats
+from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score
 
-from src.config import COLORS, TARGET_COL
+from src.config import COLORS, COLOR_LIST, TARGET_COL
 
 class ClassDistributionPlot:
     def plot(self, df: pd.DataFrame) -> go.Figure:
@@ -25,7 +27,7 @@ class ClassDistributionPlot:
             go.Pie(
                 labels=labels, values=values,
                 pull=[0, 0.1],
-                marker=dict(colors=[COLORS["benign"], COLORS["malignant"]]),
+                marker=dict(colors=[COLORS['benign'], COLORS['malignant']]),
                 textinfo="label+percent",
             ),
             row=1, col=1
@@ -34,7 +36,7 @@ class ClassDistributionPlot:
         fig.add_trace(
             go.Bar(
                 x=labels, y=values,
-                marker_color=[COLORS["benign"], COLORS["malignant"]],
+                marker_color=[COLORS['benign'], COLORS['malignant']],
                 text=values, textposition="auto",
             ),
             row=1, col=2,
@@ -42,11 +44,12 @@ class ClassDistributionPlot:
 
         fig.update_layout(
             title_text="Label Distribution - Breast Cancer Wisconsin",
-            plot_bgcolor=COLORS["dark_gray"],
-            paper_bgcolor=COLORS["black"],
-            font_color=COLORS["white"],
+            plot_bgcolor=COLORS['dark_gray'],
+            paper_bgcolor=COLORS['black'],
+            font_color=COLORS['white'],
             showlegend=False,
         )
+
         return fig
 
 class FeatureBoxPlot:
@@ -61,7 +64,7 @@ class FeatureBoxPlot:
         fig, axes = plt.subplots(nrows, ncols, figsize=(ncols * 4, nrows * 4))
         axes = axes.flatten()
 
-        palette = {"B": COLORS["benign"], "M": COLORS["malignant"]}
+        palette = {"B": COLORS['benign'], "M": COLORS['malignant']}
         for i, col in enumerate(feat_cols):
             sns.boxplot(
                 data=df, x=TARGET_COL, y=col,
@@ -78,6 +81,7 @@ class FeatureBoxPlot:
         group_label = {"mean": "Mean", "se": "Standard Error", "worst": "Worst"}.get(group, group)
         fig.suptitle(f"Boxplot of '{group_label}' Features - Malignant vs Benign", fontsize=14, y=1.01)
         plt.tight_layout()
+
         return fig
 
 
@@ -94,7 +98,7 @@ class FeatureRangePlot:
                 stats_df["mean"] - stats_df["min"],
                 stats_df["max"] - stats_df["mean"]
             ],
-            fmt="o", color="royalblue", ecolor="lightgray",
+            fmt="o", color='royalblue', ecolor="lightgray",
             elinewidth=3, capsize=4, label="Mean & Range (Min-Max)"
         )
         ax.set_title("Value Range (Min-Mean-Max) of Features", fontsize=14)
@@ -104,6 +108,7 @@ class FeatureRangePlot:
         ax.grid(axis="y", linestyle="--", alpha=0.6)
         ax.legend()
         plt.tight_layout()
+
         return fig
     
 class ViolinPlot:
@@ -125,7 +130,7 @@ class ViolinPlot:
         fig, axes = plt.subplots(nrows, ncols, figsize=(ncols * 4, nrows * 4))
         axes = axes.flatten()
 
-        palette = {"B": COLORS["benign"], "M": COLORS["malignant"]}
+        palette = {"B": COLORS['benign'], "M": COLORS['malignant']}
 
         for i, col in enumerate(top_features):
             sns.violinplot(
@@ -143,17 +148,18 @@ class ViolinPlot:
 
         fig.suptitle(f"Top {top_n} Most Separable Features (Cohen's d)", fontsize=14)
         plt.tight_layout()
+
         return fig
 
 class FeatureDensityPlot:
     def plot(self, df: pd.DataFrame) -> plt.Figure:
         with plt.style.context({
-            "axes.facecolor"   : COLORS["dark_gray"],
+            "axes.facecolor"   : COLORS['dark_gray'],
             "axes.linewidth"   : 2,
-            "xtick.color"      : COLORS["white"],
-            "ytick.color"      : COLORS["white"],
-            "axes.labelcolor"  : COLORS["white"],
-            "text.color"       : COLORS["white"],
+            "xtick.color"      : COLORS['white'],
+            "ytick.color"      : COLORS['white'],
+            "axes.labelcolor"  : COLORS['white'],
+            "text.color"       : COLORS['white'],
             "figure.autolayout": True,
         }):
             num_cols = df.select_dtypes(include=np.number).columns
@@ -162,7 +168,7 @@ class FeatureDensityPlot:
             nrows = (n + ncols - 1) // ncols
 
             fig = plt.figure(figsize=(ncols * 4, nrows * 3.5))
-            fig.patch.set_facecolor(COLORS["black"])
+            fig.patch.set_facecolor(COLORS['black'])
             fig.suptitle("Feature Density - Malignant vs Benign", fontsize=16)
 
             mal = df[df[TARGET_COL] == "M"]
@@ -172,11 +178,11 @@ class FeatureDensityPlot:
                 ax = plt.subplot(nrows, ncols, i + 1)
                 sns.kdeplot(
                     x=mal[col], ax=ax, linewidth=2,
-                    color=COLORS["malignant"], label="Malignant"
+                    color=COLORS['malignant'], label="Malignant"
                 )
                 sns.kdeplot(
                     x=ben[col], ax=ax, linewidth=2,
-                    color=COLORS["benign"], label="Benign"
+                    color=COLORS['benign'], label="Benign"
                 )
                 ax.set_title(
                     col.replace("_mean", "\n_mean").replace("_worst", "\n_worst").replace("_se", "\n_se"),
@@ -225,6 +231,7 @@ class CorrelationHeatmapPlot:
 
         plt.suptitle("Correlation Matrix by Feature Group", fontsize=15, y=1.02)
         plt.tight_layout()
+
         return fig
 
 class OutlierDistributionPlot:
@@ -259,13 +266,14 @@ class OutlierDistributionPlot:
             orientation="h",
             title=f"Proportion of Outliers (|z| > {z_threshold}) - Malignant vs Benign",
             color_discrete_map={
-                "Benign (%)": COLORS["benign"],
-                "Malignant (%)": COLORS["malignant"],
+                "Benign (%)": COLORS['benign'],
+                "Malignant (%)": COLORS['malignant'],
             },
             labels={"value": "Percentage (%)", "index": "Feature"},
             height=900
         )
         fig.update_layout(barmode="stack", title_x=0.5, template="plotly_dark")
+
         return fig
 
 class PCAVariancePlot:
@@ -277,9 +285,9 @@ class PCAVariancePlot:
         fig, ax1 = plt.subplots(figsize=(12, 5))
         ax2 = ax1.twinx()
 
-        ax1.bar(x, individual, color=COLORS["benign"], alpha=0.7, label="Explained Variance (%)")
-        ax2.plot(x, cumulative, cumulative, color=COLORS["malignant"], marker="o", linewidth=2, label="Cumulative Variance (%)")
-        ax2.axhline(95, color="gray", linestyle="--", linewidth=1, label="95% threshold")
+        ax1.bar(x, individual, color=COLORS['benign'], alpha=0.7, label="Explained Variance (%)")
+        ax2.plot(x, cumulative, color=COLORS['malignant'], marker="o", linewidth=2, label="Cumulative Variance (%)")
+        ax2.axhline(95, color='gray', linestyle='--', linewidth=1, label="95% threshold")
 
         ax1.set_xlabel("Principal Component")
         ax1.set_ylabel("Explained Variance (%)", color=COLORS["benign"])
@@ -297,7 +305,7 @@ class PCAVariancePlot:
 
 class PCAScatterPlot:
     def plot(self, pca_df: pd.DataFrame, mode: str = "2d") -> go.Figure:
-        color_map = {"M": COLORS["malignant"], "B": COLORS["benign"]}
+        color_map = {"M": COLORS['malignant'], "B": COLORS['benign']}
 
         if mode == "3d" and "PC3" in pca_df.columns:
             fig = px.scatter_3d(
@@ -320,9 +328,9 @@ class PCAScatterPlot:
             )
 
         fig.update_layout(
-            paper_bgcolor=COLORS["black"],
-            plot_bgcolor=COLORS["dark_gray"],
-            font_color=COLORS["white"],
+            paper_bgcolor=COLORS['black'],
+            plot_bgcolor=COLORS['dark_gray'],
+            font_color=COLORS['white'],
         )
         
         return fig
@@ -332,6 +340,7 @@ class PCAScatterPlot:
 #===========================================
 # Convenience functions
 #===========================================
+
 def plot_class_distribution(df: pd.DataFrame) -> go.Figure:
     return ClassDistributionPlot().plot(df)
 
@@ -358,3 +367,124 @@ def plot_pca_explained_variance(evr: np.ndarray) -> plt.Figure:
 
 def plot_pca_scatter(pca_df: pd.DataFrame, mode: str = "2d") -> go.Figure:
     return PCAScatterPlot().plot(pca_df, mode)
+
+#===========================================
+# Confusion Matrix
+#===========================================
+
+def plot_confusion_matrix(
+        y_true: np.ndarray,
+        y_pred: np.ndarray,
+        labels: list[str] = ['Benign', 'Malignant'],
+        title: str = "Confusion Matrix",
+        ax: plt.Axes | None = None,
+) -> plt.Figure:
+    cm = confusion_matrix(y_true, y_pred)
+    tn, fp, fn, tp = cm.ravel()
+
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(8, 6))
+    else:
+        fig = ax.get_figure()
+        
+    sns.heatmap(
+        cm, cmap = 'Blues', annot= True, fmt="d",
+        linewidths=1, ax=ax, linecolor='gray',
+        xticklabels=labels, yticklabels=labels
+    )
+
+    ax.set_xlabel("Predicted", fontsize=12)
+    ax.set_ylabel("Actual", fontsize=12)
+    ax.set_title(title, fontsize=13)
+
+    ax.text(
+        0.74, 0.6,
+        f"TN={tn}; FP={fp} \nFN={fn}; TP={tp}",
+        transform=ax.transAxes, fontsize=10,
+        va='center', ha='left',
+        bbox=dict(boxstyle='round', facecolor='lightyellow', alpha=0.5)
+    )
+
+    plt.tight_layout()
+
+    return fig
+
+#===========================================
+# ROC Curve
+#===========================================
+
+def plot_roc_curve(
+        models: list[dict],
+        y_true: np.ndarray,
+        threshold: float = 0.5,
+        title: str = "ROC Curve Comparision"
+) -> plt.Figure:
+    fig, ax = plt.subplots(figsize=(12, 7))
+
+    for i, m in enumerate(models):
+        color = m.get('color', COLOR_LIST[i % len(COLOR_LIST)])
+        ls = m.get('linestyle', '-')
+        fpr, tpr, _ = roc_curve(y_true, m['y_proba'])
+        auc = roc_auc_score(y_true, m['y_proba'])
+        ax.plot(
+            fpr, tpr,
+            color=color, linewidth=2.2, linestyle=ls,
+            label=f"{m['name']}  (AUC = {auc:.4f})"
+        )
+
+    ax.plot([0, 1], [0, 1], "k--", linewidth=1, label="Random classifier")
+
+    if threshold is not None:
+        for m in models:
+            fpr_t, tpr_t, thresholds_t = roc_curve(y_true, m['y_proba'])
+            idx = np.argmin(np.abs(thresholds_t - threshold))
+            ax.scatter(
+                fpr_t[idx], tpr_t[idx], color=m['color_threshold'], s=100, zorder=5,
+                label=f"Threshold = {threshold}\n(FPR={fpr[idx]:.2f}, TPR={tpr[idx]:.2f})"
+            )
+        
+
+    ax.set_xlabel("False Positive Rate (FPR)", fontsize=12)
+    ax.set_ylabel("True Positive Rate (TPR)", fontsize=12)
+    ax.set_title(title, fontsize=13)
+    ax.legend(fontsize=10)
+    ax.grid(alpha=0.3)
+    plt.tight_layout()
+
+    return fig
+
+#===========================================
+# LR Coefficinents
+#===========================================
+
+def plot_coefficients(
+        coefficients: np.ndarray,
+        feature_names: list[str],
+        title: str = "Logistic Regression Coefficients",
+        top_n: int | None = None
+) -> plt.Figure:
+    coef_series = pd.Series(coefficients, index=feature_names)
+
+    if top_n is not None:
+        coef_series = coef_series.reindex(
+            coef_series.abs().sort_values(ascending=False).index
+        ).head(top_n)
+
+    coef_series = coef_series.sort_values()
+    bar_colors = [COLORS['malignant'] if v > 0 else COLORS['benign'] for v in coef_series.values]
+
+    fig, ax = plt.subplots(figsize=(10, max(5, len(coef_series) * 0.28)))
+    ax.barh(coef_series.index, coef_series.values, color = bar_colors, alpha=0.85)
+    ax.axvline(0, color='black', linewidth=0.8)
+    ax.set_xlabel("Coefficient value (θ)", fontsize=12)
+    ax.set_title(title, fontsize=13)
+    ax.grid(axis="x", linestyle="--", alpha=0.5)
+
+    legend_handles = [
+        Patch(color=COLORS['malignant'], label="Feature increase raises P(Malignant)"),
+        Patch(color=COLORS['benign'], label="Feature increase lowers P(Malignant)")
+    ]
+    ax.legend(handles=legend_handles, fontsize=9)
+
+    plt.tight_layout()
+    return fig

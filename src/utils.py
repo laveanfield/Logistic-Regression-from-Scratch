@@ -1,4 +1,6 @@
-from src.config import COLORS, COLOR_LIST, TARGET_COL
+from src.config import (
+    COLORS, COLOR_LIST, TARGET_COL,
+)
 from src.data_loader import (
     DataLoader,
     load_breast_cancer_data,
@@ -20,9 +22,9 @@ from src.visualization import (
     plot_pca_scatter,
     plot_outlier_distribution,
     plot_violin,
-    # plot_confusion_matrix,
-    # plot_roc_comparison,
-    # plot_coefficients,
+    plot_confusion_matrix,
+    plot_roc_curve,
+    plot_coefficients,
 )
 
 __all__ = [
@@ -36,5 +38,5 @@ __all__ = [
     "plot_class_distribution", "plot_feature_range", "plot_feature_boxplots",
     "plot_correlation_heatmaps", "plot_feature_density", "plot_pca_explained_variance",
     "plot_pca_scatter", "plot_outlier_distribution", "plot_violin",
-    # "plot_confusion_matrix", "plot_roc_comparison", "plot_coefficients",
+    "plot_confusion_matrix", "plot_roc_curve", "plot_coefficients",
 ]

@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
+from typing import Tuple
 
 from src.config import (
     TARGET_COL,
@@ -59,7 +60,7 @@ def preprocess_breast_cancer_data(
     X_test_sc = preprocessor.transform(X_test)
 
     print("After scaling:")
-    print(f"X_train : {X_train_sc.shape} | Malignant: {y_train.sum()} / {len(y_train)}")
+    print(f"X_train : {X_train_sc.shape}  | Malignant: {y_train.sum()} / {len(y_train)}")
     print(f"X_val   : {X_val_sc.shape}   | Malignant: {y_val.sum()} / {len(y_val)}")
     print(f"X_test  : {X_test_sc.shape}  | Malignant: {y_test.sum()} / {len(y_test)}")
 
@@ -67,7 +68,12 @@ def preprocess_breast_cancer_data(
 
 # We dont apply the function below to our project, I wrote the function for my own purpose only.
 
-def apply_smote(X_train: np.ndarray, y_train: np.ndarray, strategy: float = SMOTE_STRATEGY, random_state: int = RANDOM_STATE):
+def apply_smote(
+        X_train: np.ndarray,
+        y_train: np.ndarray,
+        strategy: float = SMOTE_STRATEGY, 
+        random_state: int = RANDOM_STATE
+) -> Tuple[np.ndarray, np.ndarray]:
     try:
         from imblearn.over_sampling import SMOTE
     except ImportError:

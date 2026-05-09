@@ -7,7 +7,7 @@ RAW_DIR = DATA_DIR / "raw"
 PROCESSED_DIR = DATA_DIR / "processed"
 
 #===========================================
-# Dataset
+# Datasets
 #===========================================
 
 CSV_FILENAME = "data.csv"
@@ -42,13 +42,14 @@ COLORS = {
     "malignant" : "#FF5851",
     "benign"    : "#3d9dfc",
     "purple"    : "#d852fa",
-    "dark_gray" : "#494a49",
+    "dark_gray" : "#1C768F",
     "black"     : "#212121",
     "white"     : "#ffffff",
     "gray"      : "#727372",
     "green"     : "#03fc39",
     "teal"      : "#00b4d8",
     "orange"    : "#f4a261",
+    "idk"       : "#b03e53",
 }
 
 COLOR_LIST = list(COLORS.values())
