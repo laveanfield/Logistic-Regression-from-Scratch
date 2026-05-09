@@ -185,20 +185,6 @@ kaggle>=1.6              # optional: required only when loading data via Kaggle 
 
 ---
 
-## Usage
-
-```python
-from src.logistic_regression import LogisticRegression
-
-model = LogisticRegression(learning_rate=0.01, n_iterations=1000)
-model.fit(X_train, y_train)
-
-predictions = model.predict(X_test)
-probabilities = model.predict_proba(X_test)
-```
-
----
-
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
