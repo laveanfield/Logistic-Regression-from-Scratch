@@ -33,7 +33,7 @@ def preprocess_breast_cancer_data(
         test_size: float = TEST_SIZE,
         val_size: float = VAL_SIZE,
         random_state: int = RANDOM_STATE
-) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, list[str]]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, list[str], BreastCancerPreprocessor]:
     preprocessor = BreastCancerPreprocessor()
 
     X = df.drop(columns=[TARGET_COL])
@@ -64,7 +64,11 @@ def preprocess_breast_cancer_data(
     print(f"X_val   : {X_val_sc.shape}   | Malignant: {y_val.sum()} / {len(y_val)}")
     print(f"X_test  : {X_test_sc.shape}  | Malignant: {y_test.sum()} / {len(y_test)}")
 
-    return X_train_sc, X_val_sc, X_test_sc, y_train, y_val, y_test, feature_names
+    return X_train_sc, X_val_sc, X_test_sc, y_train, y_val, y_test, feature_names, preprocessor
+
+# Add bias to each sample (x_0 = 1)
+def add_bias(X: np.ndarray) -> np.ndarray:
+    return np.hstack([np.ones((X.shape[0], 1)), X])
 
 # We dont apply the function below to our project, I wrote the function for my own purpose only.
 

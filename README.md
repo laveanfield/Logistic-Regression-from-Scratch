@@ -14,6 +14,11 @@ The resulting model is benchmarked against `scikit-learn`'s `LogisticRegression`
 
 ```
 Logistic-Regression-from-Scratch/
+├── .streamlit/
+│   └── config.toml                            # Streamlit theme configuration
+├── assets/
+│   ├── page_icon.png                          # App icon
+│   └── style.css                              # Custom CSS for the web app
 ├── data/
 │   ├── processed/
 │   │   └── data.csv                           # Cleaned and preprocessed dataset
@@ -27,9 +32,14 @@ Logistic-Regression-from-Scratch/
 ├── src/
 │   ├── config.py                              # Hyperparameters and path configurations
 │   ├── data_loader.py                         # Data loading utilities
+│   ├── logistic_regression_scratch.py         # Custom LogisticRegression class
 │   ├── preprocessing.py                       # Feature scaling, train/test split, SMOTE
 │   ├── utils.py                               # Evaluation metrics and helper functions
 │   └── visualization.py                       # Loss curves, confusion matrix, ROC-AUC plots
+├── threshold/
+│   ├── lr_thr.joblib                          # Optimal threshold for custom model
+│   └── sk_thr.joblib                          # Optimal threshold for scikit-learn model
+├── app.py                                     # Streamlit web application
 ├── EDA_and_Preprocessing_BreastCancer.ipynb   # Exploratory data analysis and preprocessing
 ├── logistic_regression_breast_cancer.ipynb    # Model training, evaluation, and comparison
 ├── requirements.txt
@@ -183,6 +193,42 @@ plotly
 imbalanced-learn>=0.11   # optional: required only when using SMOTE
 kaggle>=1.6              # optional: required only when loading data via Kaggle API
 ```
+
+---
+
+## Usage
+ 
+```python
+from src.logistic_regression_scratch import LogisticRegressionScratch
+ 
+model = LogisticRegressionScratch(learning_rate=0.1, n_iterations=1000, lambda_reg=0.01)
+model.fit(X_train, y_train, X_val=X_val, y_val=y_val)
+ 
+predictions  = model.predict(X_test)
+probabilities = model.predict_proba(X_test)
+ 
+model.save("models/scratch_tuned.joblib")
+```
+ 
+---
+ 
+## Web Application
+ 
+An interactive web application is provided via Streamlit, allowing users to explore model predictions and evaluation results without running the notebooks directly.
+ 
+**Run the app locally**
+ 
+```bash
+streamlit run app.py
+```
+ 
+The app consists of three pages:
+ 
+**Predict** — enter tumor measurements manually and obtain a real-time prediction from either the custom or the scikit-learn model, along with a confidence score.
+ 
+**Compare models** — side-by-side evaluation of both models on the held-out test set, including a scatter plot of predicted probabilities to visualize agreement between the two approaches.
+ 
+**Metrics** — detailed evaluation of the selected model, including accuracy, precision, recall, F1-score, confusion matrix, and ROC curve.
 
 ---
 

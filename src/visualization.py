@@ -416,7 +416,7 @@ def plot_confusion_matrix(
 def plot_roc_curve(
         models: list[dict],
         y_true: np.ndarray,
-        threshold: float = 0.5,
+        threshold: list[float] | None = None,
         title: str = "ROC Curve Comparision"
 ) -> plt.Figure:
     fig, ax = plt.subplots(figsize=(12, 7))
@@ -424,7 +424,7 @@ def plot_roc_curve(
     for i, m in enumerate(models):
         color = m.get('color', COLOR_LIST[i % len(COLOR_LIST)])
         ls = m.get('linestyle', '-')
-        fpr, tpr, _ = roc_curve(y_true, m['y_proba'])
+        fpr, tpr, thresholds = roc_curve(y_true, m['y_proba'])
         auc = roc_auc_score(y_true, m['y_proba'])
         ax.plot(
             fpr, tpr,
@@ -432,17 +432,21 @@ def plot_roc_curve(
             label=f"{m['name']}  (AUC = {auc:.4f})"
         )
 
-    ax.plot([0, 1], [0, 1], "k--", linewidth=1, label="Random classifier")
+        if threshold is not None:
+            best_threshold = threshold[i]
+        elif 'y_val' in m and 'y_proba_val' in m:
+            fpr_v, tpr_v, threshold_v = roc_curve(m['y_val'], m['y_proba_val'])
+            best_threshold = threshold_v[np.argmax(tpr_v - fpr_v)]
+        else:
+            best_threshold = thresholds[np.argmax(tpr - fpr)]
+            
+        idx_opt = np.argmin(np.abs(thresholds - best_threshold))
+        ax.scatter(
+            fpr[idx_opt], tpr[idx_opt], color=m['color_threshold'], s=100, zorder=5,
+            label=f"Threshold = {best_threshold}\n(FPR={fpr[idx_opt]:.4f}, TPR={tpr[idx_opt]:.4f})"
+        )
 
-    if threshold is not None:
-        for m in models:
-            fpr_t, tpr_t, thresholds_t = roc_curve(y_true, m['y_proba'])
-            idx = np.argmin(np.abs(thresholds_t - threshold))
-            ax.scatter(
-                fpr_t[idx], tpr_t[idx], color=m['color_threshold'], s=100, zorder=5,
-                label=f"Threshold = {threshold}\n(FPR={fpr[idx]:.2f}, TPR={tpr[idx]:.2f})"
-            )
-        
+    ax.plot([0, 1], [0, 1], "k--", linewidth=1, label="Random classifier")
 
     ax.set_xlabel("False Positive Rate (FPR)", fontsize=12)
     ax.set_ylabel("True Positive Rate (TPR)", fontsize=12)
@@ -454,7 +458,7 @@ def plot_roc_curve(
     return fig
 
 #===========================================
-# LR Coefficinents
+# LR Coefficients
 #===========================================
 
 def plot_coefficients(

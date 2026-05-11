@@ -7,6 +7,12 @@ RAW_DIR = DATA_DIR / "raw"
 PROCESSED_DIR = DATA_DIR / "processed"
 
 #===========================================
+# Page icon and style
+#===========================================
+ICON_PATH = PROJECT_ROOT / "assets" / "page_icon.png"
+STYLE_PATH = PROJECT_ROOT / "assets" / "style.css"
+
+#===========================================
 # Datasets
 #===========================================
 
@@ -49,7 +55,8 @@ COLORS = {
     "green"     : "#03fc39",
     "teal"      : "#00b4d8",
     "orange"    : "#f4a261",
-    "idk"       : "#b03e53",
+    "idk"       : "#d16478",
+    
 }
 
 COLOR_LIST = list(COLORS.values())

@@ -1,0 +1,59 @@
+input[type="number"], input[type="text"] {
+    border: 0.5px solid #E0E0E0;
+    border-radius: 8px;
+    background: #FFFFFF;
+}
+
+.stButton > button {
+    border: 0.5px solid #D0D0D0;
+    border-radius: 8px;
+    background: #F7F7F8;
+    color: #1A1A1A;
+    font-weight: 500;
+}
+
+.stButton > button[kind="primary"] {
+    background: #EEEDFE;
+    border-color: #7F77DD;
+    color: #3C3489;
+}
+
+.stRadio > div {
+    gap: 8px;
+    flex-direction: row;
+}
+
+.stRadio > div > label {
+    border: 0.5px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 6px 16px;
+    cursor: pointer;
+}
+.stRadio > div > label[data-checked="true"] {
+    background: #EEEDFE;
+    border-color: #7F77DD;
+    color: #3C3489;
+    font-weight: 500;
+}
+
+[data-testid="stSidebar"] {
+    background: #ECEBE7;
+    border-right: 1px solid #DDDDDD;
+}
+
+[data-testid="stSidebar"] * {
+    color: #222222;
+}
+
+
+[data-testid="stMetric"] {
+    border: 0.5px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    background: #FFFFFF;
+}
+
+[data-testid="stCaptionContainer"] p {
+    color: #888888;
+    font-size: 24px;
+}

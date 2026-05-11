@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from sklearn.datasets import load_breast_cancer
-from src.config import(
+from src.config import (
     CSV_PATH,
     PROCESSED_DIR,
     KAGGLE_ZIP_PATH,
