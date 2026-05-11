@@ -178,7 +178,7 @@ Set `source = "sklearn"` in `config.py`. The dataset is loaded directly via `skl
 
 **Option C — Manual download from Kaggle website**
 
-Set `source = "kaggle_csv"` in `config.py`. Download the dataset manually from
+Set `source = "csv"` in `config.py`. Download the dataset manually from
 https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data, place the
 extracted `data.csv` file into `data/raw/`, then run the notebook as usual.
 No Kaggle API credentials required.
