@@ -9,6 +9,10 @@ Prior to model training, an in-depth exploratory data analysis was conducted to 
 The resulting model is benchmarked against `scikit-learn`'s `LogisticRegression` to verify correctness and evaluate relative performance across standard classification metrics.
 
 ---
+## Demo
+![Demo](assets/demo.gif)
+
+---
 
 ## Project Structure
 
